@@ -14,7 +14,10 @@ test:
   stage: test
   image: python:3.12
   script:
-    - python -m unittest discover
+  script:
+    - pip install -r requirements.txt
+    - pip install pytest
+    - python -m unittest discover -s tests -p "test*.py"
 
 package-job:
   image: docker:24.0.5  # Versão estável do Docker para build
