@@ -3,7 +3,7 @@ import io
 import pytest
 from unittest.mock import patch
 from pathlib import Path
-from pdf_converter import PDFConverter  # ajuste para o caminho real do seu módulo
+from conversor import PDFConverter  # ajuste para o caminho real do seu módulo
 
 @pytest.fixture
 def converter():
