@@ -16,7 +16,9 @@ test:
   script:
     - pip install -r requirements.txt
     - pip install pytest
-    - python -m unittest discover -s tests -p "test*.py"
+    - export PYTHONPATH="$PYTHONPATH:$(pwd)"
+    - pytest tests/
+
 
 package-job:
   image: docker:24.0.5
