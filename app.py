@@ -24,12 +24,12 @@ def index():
         if 'file' not in request.files:
             flash('Nenhum arquivo enviado')
             return redirect(request.url)
-        
+
         file = request.files['file']
         if file.filename == '':
             flash('Nenhum arquivo selecionado')
             return redirect(request.url)
-        
+
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             input_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -37,7 +37,7 @@ def index():
 
             output_filename = f"{os.path.splitext(filename)[0]}.pdf"
             output_path = os.path.join(app.config['UPLOAD_FOLDER'], output_filename)
-            
+
             converter = PDFConverter()
             success, message = converter.convert_to_pdf(input_path, output_path)
 
@@ -46,6 +46,9 @@ def index():
             else:
                 flash(f"Erro na conversão: {message}")
                 return redirect(request.url)
+        else:
+            flash('Arquivo com extensão não permitida')
+            return redirect(request.url)
 
     return render_template('index.html')
 
