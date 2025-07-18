@@ -1,8 +1,10 @@
 # Use uma imagem base Python
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 # Defina o diretório de trabalho
 WORKDIR /app
+
+ENV PYTHONUNBUFFERED=1
 
 # Copie requirements e instale dependências
 COPY requirements.txt .
