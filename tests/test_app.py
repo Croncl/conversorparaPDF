@@ -23,14 +23,13 @@ def test_post_file_not_allowed_extension(client):
         'file': (io.BytesIO(b'teste'), 'arquivo.txt')  # txt não permitido
     }
     res = client.post('/', data=data, content_type='multipart/form-data')
-    # O app redireciona com flash (302) porque a extensão não é permitida
+    # O app deve redirecionar (302) com flash porque extensão não é permitida
     assert res.status_code == 302
 
 def test_post_file_allowed_extension(client):
     data = {
         'file': (io.BytesIO(b'teste'), 'arquivo.png')  # png permitido
     }
-    # Aqui, como o PDFConverter provavelmente não vai converter 'teste' binário real,
-    # a conversão pode falhar, então podemos esperar redirecionamento com erro.
     res = client.post('/', data=data, content_type='multipart/form-data')
-    assert res.status_code == 302 or res.status_code == 200
+    # Dependendo da implementação do app, pode ser sucesso (200) ou redirecionamento (302)
+    assert res.status_code in (200, 302)
