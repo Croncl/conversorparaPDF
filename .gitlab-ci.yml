@@ -14,17 +14,16 @@ test:
   stage: test
   image: python:3.12
   script:
-  script:
     - pip install -r requirements.txt
     - pip install pytest
     - python -m unittest discover -s tests -p "test*.py"
 
 package-job:
-  image: docker:24.0.5  # Versão estável do Docker para build
+  image: docker:24.0.5
   services:
     - docker:24.0.5-dind
   stage: package
-  before_script: []  # Remove qualquer before_script global, se houver
+  before_script: []
   script:
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN
     - docker build -t $CI_REGISTRY_IMAGE:latest .
