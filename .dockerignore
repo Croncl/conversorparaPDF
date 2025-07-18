@@ -1,0 +1,33 @@
+# Ignorar ambiente virtual Python
+venv/
+env/
+.venv/
+.env/
+
+# Arquivos de cache Python
+__pycache__/
+*.py[cod]
+
+# Arquivos de teste, cobertura, logs
+tests/
+*.log
+.coverage
+coverage.xml
+htmlcov/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Configurações e diretórios do editor
+.vscode/
+.idea/
+
+# Arquivos Docker que não precisam ir para build
+docker-compose.override.yml
+
+# Arquivos que não são necessários na imagem
+*.md
+*.git
+.gitignore
+.dockerignore

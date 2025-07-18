@@ -1,0 +1,50 @@
+stages:
+  - build
+  - test
+  - docker_build
+  - deploy
+
+variables:
+  IMAGE_NAME: registry.gitlab.com/seu_usuario/seu_projeto/conversorpdf
+
+before_script:
+  - python -V
+  - pip install -r requirements.txt
+
+build:
+  stage: build
+  script:
+    - echo "Build step (pode incluir compilação se houver)"
+  tags:
+    - docker
+
+test:
+  stage: test
+  script:
+    - pytest --maxfail=1 --disable-warnings -q
+  tags:
+    - docker
+  artifacts:
+    when: always
+    reports:
+      junit: tests/junit.xml
+    expire_in: 1 week
+
+docker_build:
+  stage: docker_build
+  script:
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHORT_SHA .
+  tags:
+    - docker
+  dependencies:
+    - test
+
+docker_push:
+  stage: deploy
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - docker push $IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+  tags:
+    - docker
+  dependencies:
+    - docker_build
