@@ -50,6 +50,7 @@ deploy-to-gke:
     - gcloud config set project $GCP_PROJECT_ID
     - gcloud config set compute/region $GKE_REGION
     - gcloud container clusters get-credentials $GKE_CLUSTER_NAME --region $GKE_REGION
+
   script:
     - kubectl apply -f k8s/
     - kubectl rollout restart deployment $DEPLOYMENT_NAME
