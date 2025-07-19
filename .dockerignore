@@ -31,3 +31,6 @@ docker-compose.override.yml
 *.git
 .gitignore
 .dockerignore
+
+# .gitignore
+gcloud-service-key.json

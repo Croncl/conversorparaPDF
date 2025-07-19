@@ -38,4 +38,5 @@ docker-compose*.yml
 # Ignore local docker images/tags if you keep locally
 # (Usually images are not saved in repo, so ignore none here)
 
-# P
+
+gcloud-service-key.json
