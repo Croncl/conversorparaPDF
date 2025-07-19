@@ -1,132 +1,115 @@
-,
-````markdown
-# Conversor de Arquivos para PDF
+# Conversor de Arquivos para PDF - Projeto com CI/CD e Kubernetes
 
-Projeto web simples para converter arquivos de imagem (JPG, PNG, BMP) e HTML para PDF.  
-Construído com Flask e Docker, com pipeline automatizado no GitLab CI/CD para build, testes, criação e publicação de imagem Docker.
+![Badge Status](https://img.shields.io/badge/status-operacional-success) ![Licença](https://img.shields.io/badge/licença-MIT-blue)
 
----
+## 📌 Visão Geral
 
-## Funcionalidades
+Projeto web para conversão de arquivos (JPG, PNG, BMP, HTML) para PDF, com pipeline automatizado de CI/CD no GitLab e implantação em cluster Kubernetes no GKE.
 
-- Upload via drag & drop ou seleção de arquivo
-- Conversão para PDF
-- Suporte a formatos JPG, PNG, BMP e HTML
-- Interface simples e responsiva
-- Pipeline automatizado com testes e Docker no GitLab
+## ✨ Funcionalidades
 
----
+- **Conversão de arquivos** para PDF
+  - Formatos suportados: JPG, PNG, BMP, HTML
+- **Interface intuitiva**
+  - Upload via drag & drop ou seleção de arquivo
+  - Design responsivo
+- **Infraestrutura avançada**
+  - Pipeline CI/CD automatizado
+  - Deploy contínuo no GKE
+  - HTTPS com Let's Encrypt
+  - Domínio personalizado via DuckDNS
 
-## Tecnologias usadas
+## 🛠️ Tecnologias Utilizadas
 
-- Python 3.11
-- Flask
-- Docker
-- GitLab CI/CD
-- Pytest (para testes)
+| Categoria       | Tecnologias                                                                 |
+|-----------------|-----------------------------------------------------------------------------|
+| Backend         | Python 3.12, Flask                                                         |
+| Containerização | Docker                                                                      |
+| Infraestrutura  | Kubernetes (GKE), cert-manager, Helm                                        |
+| CI/CD           | GitLab CI/CD                                                                |
+| Segurança       | Let's Encrypt, HTTPS                                                        |
+| DNS             | DuckDNS                                                                     |
 
----
+## 📂 Estrutura do Projeto
 
-## Como rodar localmente
+bash
+conversorpdf/
+├── app.py               # Aplicativo Flask
+├── conversor.py         # Lógica de conversão
+├── requirements.txt     # Dependências Python
+├── Dockerfile           # Configuração da imagem Docker
+├── k8s/                 # Configurações Kubernetes
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   ├── ingress.yaml
+│   ├── pvc.yaml
+│   ├── cluster-issuer-staging.yaml
+│   └── certificate.yaml
+├── tests/               # Testes unitários
+├── .gitlab-ci.yml       # Pipeline CI/CD
+└── README.md
 
-1. Clone o repositório
 
-```bash
-git clone https://github.com/seu-usuario/conversor-pdf.git
-cd conversor-pdf
-````
+## 🚀 Implantação
 
-2. Crie e ative seu ambiente virtual (venv)
+### Pré-requisitos
+- Conta no Google Cloud com projeto criado
+- Cluster GKE configurado
+- Domínio DuckDNS ativo
+- Repositório GitLab configurado
 
-```bash
-python -m venv venv
-source venv/bin/activate  # Linux / Mac
-venv\Scripts\activate     # Windows
-```
+### 🔧 Configuração Kubernetes
 
-3. Instale as dependências
+1. Aplique os recursos:
+bash
+kubectl apply -f k8s/
 
-```bash
-pip install -r requirements.txt
-```
 
-4. Execute a aplicação
+2. Verifique o status:
+bash
+kubectl get all
 
-```bash
-python app.py
-```
 
-5. Acesse `http://localhost:5000` no seu navegador
+### 🐳 Docker
 
----
+bash
+# Build da imagem
+docker build -t registry.gitlab.com/Croncl/conversorpdf:latest .
 
-## Como usar com Docker
+# Push para o registry
+docker push registry.gitlab.com/Croncl/conversorpdf:latest
 
-1. Construa a imagem Docker
 
-```bash
-docker build -t conversor-pdf .
-```
+## 🔒 Segurança e HTTPS
 
-2. Rode o container
+- **cert-manager** instalado via Helm
+- **ClusterIssuer** configurado para Let's Encrypt
+- Certificado TLS automático para o domínio
 
-```bash
-docker run -p 5000:5000 conversor-pdf
-```
+## ⚙️ Pipeline GitLab CI/CD
 
-3. Acesse `http://localhost:5000` no navegador
+Estágios principais:
+1. **build**: Compilação do projeto
+2. **test**: Execução de testes unitários
+3. **package**: Build e push da imagem Docker
+4. **deploy**: Deploy automatizado no GKE
 
----
+## 🌐 Acesso
 
-## Pipeline CI/CD (GitLab)
+- **Domínio**: devops20251-conversorpdf.duckdns.org
+- **Protocolo**: HTTPS habilitado
 
-O projeto possui um pipeline configurado no arquivo `.gitlab-ci.yml` com as seguintes etapas:
+## 🔐 Variáveis de Ambiente
 
-* Build automatizado
-* Execução de testes automatizados (pytest)
-* Build da imagem Docker
-* Push da imagem para o Container Registry do GitLab
+| Variável            | Descrição                                  |
+|---------------------|-------------------------------------------|
+| GCLOUD_SERVICE_KEY| Chave da Service Account (base64)         |
+| CI_REGISTRY_USER  | Usuário do GitLab Registry                |
+| CI_JOB_TOKEN      | Token de autenticação do job              |
 
-Para funcionar, configure as variáveis de ambiente do GitLab para autenticação no Container Registry.
+## 📞 Contato
 
----
-
-## Testes
-
-Os testes estão localizados na pasta `tests/`. Para rodar os testes localmente:
-
-```bash
-pytest tests/
-```
-
----
-
-## Estrutura do projeto
-
-```
-conversor-pdf/
-├── app.py
-├── Dockerfile
-├── requirements.txt
-├── static/
-│   ├── style.css
-│   └── fundo.png
-├── templates/
-│   └── index.html
-├── tests/
-│   └── test_app.py
-├── .gitignore
-└── .gitlab-ci.yml
-```
+**Cristovão Lacerda Cronje**  
+📧 Email: [lacerdacris83@gmail.com](mailto:lacerdacris83@gmail.com)
 
 ---
-
-## Contato
-
-Para dúvidas ou sugestões, abra uma issue no GitHub ou entre em contato.
-
----
-
-© 2025 Conversor PDF - Todos os direitos reservados.
-
-```

@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    # URL do ambiente de staging do Let's Encrypt (não emite certificados válidos, só para testes)
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: lacerdacris83@gmail.com  # <-- coloque seu e-mail aqui
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    solvers:
+      - http01:
+          ingress:
+            class: nginx
