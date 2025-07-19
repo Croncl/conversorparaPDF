@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: conversor-service
+spec:
+  type: ClusterIP  # 👉 Serviço interno no cluster, o Ingress fará o roteamento
+  selector:
+    app: conversor
+  ports:
+    - protocol: TCP
+      port: 80         # 👉 Porta exposta no cluster
+      targetPort: 5000 # 👉 Porta usada dentro do container (Flask)

@@ -2,6 +2,7 @@ stages:
   - build
   - test
   - package
+  - deploy
 
 build-job:
   stage: build
@@ -19,7 +20,6 @@ test:
     - export PYTHONPATH="$PYTHONPATH:$(pwd)"
     - pytest tests/
 
-
 package-job:
   image: docker:24.0.5
   services:
@@ -33,3 +33,29 @@ package-job:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       when: always
+
+deploy-to-gke:
+  image: google/cloud-sdk:latest
+  stage: deploy
+  needs:
+    - job: package-job
+  variables:
+    GKE_REGION: us-central1
+    GKE_CLUSTER_NAME: devops-cluster-1
+    DEPLOYMENT_NAME: conversor-deployment
+    GCP_PROJECT_ID: devops-2025-1  # <== coloque o nome do seu projeto GCP aqui
+  before_script:
+    - echo "$GCLOUD_SERVICE_KEY" | base64 -d > ${HOME}/gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+    - gcloud config set project $GCP_PROJECT_ID
+    - gcloud config set compute/region $GKE_REGION
+    - gcloud container clusters get-credentials $GKE_CLUSTER_NAME --region $GKE_REGION
+  script:
+    - kubectl apply -f k8s/
+    - kubectl rollout restart deployment $DEPLOYMENT_NAME
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: always
+
+
+
