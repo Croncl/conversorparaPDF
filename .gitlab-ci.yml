@@ -43,7 +43,7 @@ deploy-to-gke:
     GKE_REGION: us-central1
     GKE_CLUSTER_NAME: devops-cluster-1
     DEPLOYMENT_NAME: conversor-deployment
-    GCP_PROJECT_ID: devops-2025-1  # <== coloque o nome do seu projeto GCP aqui
+    GCP_PROJECT_ID: eloquent-victor-466015-s4
   before_script:
     - echo "$GCLOUD_SERVICE_KEY" | base64 --decode > ${HOME}/gcloud-service-key.json
     - gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
