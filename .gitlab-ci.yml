@@ -42,7 +42,7 @@ deploy-to-gke:
   variables:
     GKE_REGION: us-central1
     GKE_CLUSTER_NAME: devops-cluster-1
-    DEPLOYMENT_NAME: conversor-deployment
+    DEPLOYMENT_NAME: conversor
     GCP_PROJECT_ID: eloquent-victor-466015-s4
   before_script:
     - echo "$GCLOUD_SERVICE_KEY" | base64 --decode > ${HOME}/gcloud-service-key.json
